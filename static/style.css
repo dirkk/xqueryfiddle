@@ -1,0 +1,41 @@
+.ace_editor { 
+  position: relative !important;
+  width: 100%;
+  height: 395px;
+}
+
+body {
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+}
+
+.nav {
+  margin-bottom: 0px !important;
+}
+
+.tabbable {
+  padding: 0px 19px 14px;
+}
+
+#resultPane {
+  padding: 0px 19px 14px;
+}
+
+#xqueryPane {
+  padding-top: 83px;
+  padding-right: 19px;
+}
+
+.xmlEditor {
+  border: 0px solid #ddd;
+}
+
+.documentCommands {
+  padding-top: 10px;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-bottom: 35px;
+  margin-bottom: 0px !important;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+}

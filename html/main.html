@@ -1,0 +1,97 @@
+<html ng-app="fiddle" lang="en">
+  <head>
+    <title>XQuery Fiddle</title>
+    <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/static/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" />
+    <link href="/static/style.css" rel="stylesheet" />
+
+    <script src="/static/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.4/angular.min.js"></script>
+    <script src="/static/ui-bootstrap-tpls-0.2.0.min.js" type="text/javascript" />
+    <script src="/static/controller.js" type="text/javascript" />
+    <script src="/static/ace.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      angular.module('fiddle', ['ace', 'ui.bootstrap']);
+    </script>
+  </head>
+  <body ng-controller="EditorCtrl">
+    <a href="https://github.com/dirk/xqueryfiddle">
+      <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" alt="Fork me on GitHub" />
+    </a>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <a class="brand" href="#">XQuery Fiddle</a>
+        <ul class="nav">
+          <li>
+            <li class="dropdown">
+            <a class="dropdown-toggle">{{processor.name}}<span class="caret" /></a>
+              <ul class="dropdown-menu">
+                <li ng-repeat="p in processors">
+                <a>{{p.name}}</a>
+                </li>
+              </ul>
+            </li>
+          </li>
+          <li class="divider-vertical" />
+          <li><a href="/restxq/a192b75e-abf1-4d22-b1d5-53a6b31cb882#/60"><i class="icon-list-alt" />&nbsp;View Sample Fiddle</a></li>
+          <li><a href="/restxq"><i class="icon-refresh" />&nbsp;New Fiddle</a></li>
+          <li><a href="#"><i class="icon-user" />&nbsp;Login</a></li>
+          <li><button type="button" class="btn btn-success" ng-click="run()"><i class="icon-play" />&nbsp;Run</button></li>
+          <li ng-controller="ModalCtrl">
+            <a ng-click="open()"><i class="icon-question-sign" />&nbsp;About</a>
+            <div tabindex="-1" modal="shouldBeOpen" close="close()" options="opts">
+              <div class="modal-header">
+                <h3 id="aboutLabel">About XQuery Fiddle</h3>
+              </div>
+              <div class="modal-body">
+                <p>This is a webpage for sharing XQuery code. This can be especially useful if you want to ask a XQuery related question on a mailing list, Stack Overflow or similar sites.</p>
+                <p>In the left pane you can upload XML documents. These will be automatically available in the query context. In the right pane you can enter your XQuery to be executed.</p>
+                <p>You can change between different XQuery processors. At the moment, only BaseX is available but we are planning to expand this.</p>
+                <p>This application is written and maintained by Dirk Kirsten (<a href="mailto:dk@basex.org"><i class="icon-envelope" />&nbsp;dk@basex.org</a>). It uses RestXQ, AngularJS and Bootstrap. You can check out the source at&nbsp;<a href="https://github.com/dirkk/xqueryfiddle">Github</a>&nbsp;and I will happily accept pull requests.</p>
+                  <p>This application is licensed under the&nbsp;<a href="http://www.gnu.org/licenses/gpl.html">GNU General Public License</a>.</p>
+              </div>
+              <div class="modal-footer">
+                <button class="btn" ng-click="close()">Close</button>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="row-fluid">
+      <div class="span6">
+        <div id="xmlPane">
+          <tabs>
+            <pane ng-repeat="doc in docs" heading="{{doc.title}}" active="doc.selected">
+              <div class="documentCommands">
+                <div class="pull-right">
+                  <button type="button" class="btn btn-small" ng-click="renameDocument(doc)"><i class="icon-pencil" />&nbsp;Rename</button>
+                    <button type="button" class="btn btn-small" ng-click="deleteDocument($index)"><i class="icon-remove" />&nbsp;Delete</button>
+                    <button type="button" class="btn btn-small" ng-click="addDocument()"><i class="icon-plus" />&nbsp;Add</button>
+                </div>
+              </div>
+              <div id="xmlEditor-{{doc.title}}" class="xmlEditor" ace="xml" ng-model="doc.content"></div>
+            </pane>
+          </tabs>
+        </div>
+      </div>
+      <div class="span6" id="xqueryPane">
+        <div id="xqueryEditor" ace="xquery" ng-model="xquery"></div>
+      </div>
+    </div>
+    <div class="row-fluid">
+      <div class="span12" id="resultPane">
+        <div class="alert alert-error" ng-show="alert">
+          <button type="button" class="close" ng-click="closeAlert()">&times;</button>
+          <div>
+            <div>Stopped at line {{alert.line}}, column {{alert.column}}</div>
+            <strong>[{{alert.code}}]</strong>
+            <span>{{alert.description}}</span>
+          </div>
+        </div>
+        <div id="result" ace="xml" ace-readonly="true" ng-model="result"></div>
+      </div>
+    </div>
+
+  </body>
+</html>
